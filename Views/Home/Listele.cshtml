@@ -1,0 +1,49 @@
+﻿@model IEnumerable<TestNagis.Models.Transection>
+@using GridMvc.Html
+@{
+    ViewBag.Title = "Listele";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    td, th {
+        border-right: 3px solid lightblue;
+    }
+</style>
+<h2>Listele</h2>
+<div>
+@using (Html.BeginForm("DownloadListele", "Home"))
+{
+    <button class="btn btn-primary" type="submit">List Downloads</button>
+}
+
+
+<form action="/Home/Listele" method="get">
+    <div class="form-group">
+        <label for="q">Start Date</label>
+        <input type="date" name="dates" id="dates" class="form-control" />
+        <label for="q">End Date</label>
+        <input type="date" name="datee" id="datee" class="form-control" />
+
+    </div>
+    <input class="btn btn-primary" type="submit" value="cek" name="submit" />
+    <input class="btn btn-primary" type="submit" value="report" name="submit" />
+
+</form>
+<br />
+
+@using (Html.BeginForm("DownloadListele", "Home"))
+{
+    <button class="btn btn-primary" type="submit">Report and Go ListDownloads</button>
+}
+
+
+
+@Html.Grid(Model).Columns(Column =>
+   {
+       Column.Add(m => m.Buyer).Titled("Buyer").Sortable(true).Filterable(true);
+       Column.Add(m => m.Seller).Titled("Seller").Sortable(true).Filterable(true);
+       Column.Add(m => m.Amount).Titled("Amount").Sortable(true).Filterable(true);
+       Column.Add(m => m.Date).Titled("Date").Sortable(true).Filterable(true).Format("{0:d}");
+
+   }).WithPaging(50)
+

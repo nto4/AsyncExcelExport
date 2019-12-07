@@ -1,0 +1,31 @@
+﻿@model IEnumerable<TestNagis.Models.Download>
+@using GridMvc.Html
+@{
+    ViewBag.Title = "DownloadListele";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <style>
+        td, th {
+            border-right: 3px solid lightblue;
+        }
+    </style>
+<h2>DownloadListele</h2>
+@using (Html.BeginForm("Listele", "Home"))
+{
+    <button class="btn btn-primary" type="submit">List Transections</button>
+}
+
+@Html.Grid(Model).Columns(Column =>
+{
+    Column.Add(m => m.GuidName).Titled("GuidName").Sortable(true).Filterable(true);
+    Column.Add(m => m.CreateDate).Titled("CreateDate").Sortable(true).Filterable(true).Format("{0:d}");
+    Column.Add(m => m.StartDate).Titled("StartDate").Sortable(true).Filterable(true).Format("{0:d}");
+    Column.Add(m => m.EndDate).Titled("EndDate").Sortable(true).Filterable(true).Format("{0:d}");
+    Column.Add(m => m.IsExist).Titled("IsExist").Sortable(true).Filterable(true);
+
+    Column.Add()
+.Encoded(false)
+.Sanitized(false)
+.SetWidth(80)
+.RenderValueAs(o => Html.ActionLink("Download", "ExportToExcel", "Home", new { start = o.StartDate, end = o.EndDate }, new { @class="btn btn-primary" }));
+}).WithPaging(50)
