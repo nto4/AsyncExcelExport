@@ -4,13 +4,14 @@
     ViewBag.Title = "Listele";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <style>
     td, th {
         border-right: 3px solid lightblue;
     }
 </style>
 <h2>Listele</h2>
-<div>
+
 @using (Html.BeginForm("DownloadListele", "Home"))
 {
     <button class="btn btn-primary" type="submit">List Downloads</button>
