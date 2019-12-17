@@ -12,29 +12,93 @@
 </style>
 <h2>Listele</h2>
 
-@using (Html.BeginForm("DownloadListele", "Home"))
-{
-    <button class="btn btn-primary" type="submit">List Downloads</button>
-}
+<script>
+ Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+});
+    window.onload = function() {
+        $(document).ready(function () {
+            $('#date').value.Date = new Date());
+
+});
+};
+</script>
 
 
+
+<script>
+    var a;
+    var b;
+    function mehmet() {
+        let dates = document.getElementById("dates");
+        console.log(dates.value);
+        console.log(typeof dates.value);
+        console.log(new Date(dates.value));
+        let datee = document.getElementById("datee");
+        console.log(datee.value);
+        console.log(typeof datee.value);
+        console.log(new Date(datee.value));
+        cls(dates,datee)
+    }
+
+    function myFunction(){
+    mehmet();
+    cls(dates,datee);
+    }
+    function cls(dates, datee) {
+        a = dates;
+        b = datee;
+        //alert(a.value);//?dates=2019-03-11&datee=2019-07-11&submit=cek
+
+        window.open('@Url.Action("ExportToExcel", "Sec")'+'?start='+ a.value +'&' +'end=' +b.value)
+        
+    }
+    //alert("balabla");
+</script>
+
+<script type="text/javascript">
+        $(function () {
+            $("#submit").click(function () {
+                document.forms[0].submit();
+                return false;
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+<form action="/" method="post"></form>
 <form action="/Home/Listele" method="get">
+
     <div class="form-group">
         <label for="q">Start Date</label>
-        <input type="date" name="dates" id="dates" class="form-control" />
+        <input type="date" name="dates" id="dates" data-category-id="2305" class="form-control" />
         <label for="q">End Date</label>
         <input type="date" name="datee" id="datee" class="form-control" />
 
     </div>
-    <input class="btn btn-primary" type="submit" value="cek" name="submit" />
-    <input class="btn btn-primary" type="submit" value="report" name="submit" />
+    <input class="btn btn-primary" type="submit" value="Filter Transections" name="submit" />
+    <input class="btn btn-primary" type="submit" value="Report" name="submit" />
+    <button class="btn btn-primary" onclick="myFunction()">Download New Tab</button>
+    @Html.ActionLink("Downloads Result ", "DownloadListele", "Home", null, new { target = "_blank", @class = "btn btn-primary" })
+
+
 
 </form>
 <br />
 
 @using (Html.BeginForm("DownloadListele", "Home"))
 {
-    <button class="btn btn-primary" type="submit">Report and Go ListDownloads</button>
+<button class="btn btn-primary" type="submit">Report and Go Downloads List</button>
 }
 
 
@@ -47,4 +111,3 @@
        Column.Add(m => m.Date).Titled("Date").Sortable(true).Filterable(true).Format("{0:d}");
 
    }).WithPaging(50)
-
