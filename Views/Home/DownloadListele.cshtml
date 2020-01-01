@@ -28,5 +28,5 @@
 .Encoded(false)
 .Sanitized(false)
 .SetWidth(80)
-.RenderValueAs(o => Html.ActionLink("Download", "ExportToExcel", "Home", new { start = o.StartDate, end = o.EndDate }, new { @class="btn btn-primary" }));
+.RenderValueAs(o => Html.ActionLink("Download", "Download", "Home", new {  guid = o.GuidName }, new { @class="btn btn-primary" }));
 }).WithPaging(50)

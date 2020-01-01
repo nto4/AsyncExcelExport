@@ -13,16 +13,16 @@
 <h2>Listele</h2>
 
 <script>
- Date.prototype.toDateInputValue = (function() {
-    var local = new Date(this);
-    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-    return local.toJSON().slice(0,10);
-});
-    window.onload = function() {
+    Date.prototype.toDateInputValue = (function () {
+        var local = new Date(this);
+        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        return local.toJSON().slice(0, 10);
+    });
+    window.onload = function () {
         $(document).ready(function () {
             $('#date').value.Date = new Date());
 
-});
+    });
 };
 </script>
 
@@ -52,28 +52,52 @@
         b = datee;
         //alert(a.value);//?dates=2019-03-11&datee=2019-07-11&submit=cek
 
-        window.open('@Url.Action("ExportToExcel", "Sec")'+'?start='+ a.value +'&' +'end=' +b.value)
-        
+        //window.open('@Url.Action("ExportToExcel", "Sec")'+'?start='+ a.value +'&' +'end=' +b.value)
+
+
     }
     //alert("balabla");
 </script>
 
 <script type="text/javascript">
-        $(function () {
-            $("#submit").click(function () {
-                document.forms[0].submit();
-                return false;
+    $(function () {
+        $("#submit").click(function () {
+            document.forms[0].submit();
+            return false;
+        });
+    });
+</script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#btnGet").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Home/CreateDocument",
+                data: '{start: "' + $("#dates").val() + '",end: "' + $("#datee").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    alert("Hello: " + response.Name + " .\nCurrent Date and Time: " + response.DateTime);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
             });
         });
-    </script>
+    });
+</script>
 
 
 
 
 
 
-
-
+<button class="btn btn-primary" id="btnGet" >Test</button>
 
 
 <form action="/" method="post"></form>
@@ -88,7 +112,7 @@
     </div>
     <input class="btn btn-primary" type="submit" value="Filter Transections" name="submit" />
     <input class="btn btn-primary" type="submit" value="Report" name="submit" />
-    <button class="btn btn-primary" onclick="myFunction()">Download New Tab</button>
+    <button class="btn btn-primary" id="btnGet" onclick="myFunction()">Download Newx Tab</button>
     @Html.ActionLink("Downloads Result ", "DownloadListele", "Home", null, new { target = "_blank", @class = "btn btn-primary" })
 
 
@@ -98,7 +122,7 @@
 
 @using (Html.BeginForm("DownloadListele", "Home"))
 {
-<button class="btn btn-primary" type="submit">Report and Go Downloads List</button>
+    <button class="btn btn-primary" type="submit">Report and Go Downloads List</button>
 }
 
 
