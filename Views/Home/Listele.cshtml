@@ -74,7 +74,7 @@
         $("#syncfusion").click(function () {
             $.ajax({
                 type: "POST",
-                url: "/Home/CreateDocument",
+                url: "/Home/SyncfusionCreateExcel",
                 data: '{start: "' + $("#dates").val() + '",end: "' + $("#datee").val() + '" }',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json"

@@ -278,7 +278,11 @@ namespace TestNagis.Controllers
                 worksheet.Cells["C1"].Value = "Seller";
                 worksheet.Cells["D1"].Value = "Amount";
                 worksheet.Cells["E1"].Value = "Date";
-
+                worksheet.Cells["A1"].Style.Font.Bold = true;
+                worksheet.Cells["B1"].Style.Font.Bold = true;
+                worksheet.Cells["C1"].Style.Font.Bold = true;
+                worksheet.Cells["D1"].Style.Font.Bold = true;
+                worksheet.Cells["E1"].Style.Font.Bold = true;
               
                 //set data from list
 
@@ -309,7 +313,7 @@ namespace TestNagis.Controllers
                 }
             }
         }
-        public void CreateDocument(DateTime? start, DateTime? end)
+        public void SyncfusionCreateExcel(DateTime? start, DateTime? end)
         {
             //Create an instance of ExcelEngine
             using (ExcelEngine excelEngine = new ExcelEngine())
