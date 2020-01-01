@@ -71,22 +71,27 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript">
     $(function () {
-        $("#btnGet").click(function () {
+        $("#syncfusion").click(function () {
             $.ajax({
                 type: "POST",
                 url: "/Home/CreateDocument",
                 data: '{start: "' + $("#dates").val() + '",end: "' + $("#datee").val() + '" }',
                 contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-                    alert("Hello: " + response.Name + " .\nCurrent Date and Time: " + response.DateTime);
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
+                dataType: "json"
+            });
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $("#EPPlus").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Home/EEPCreateExcel",
+                data: '{start: "' + $("#dates").val() + '",end: "' + $("#datee").val() + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
             });
         });
     });
@@ -97,8 +102,8 @@
 
 
 
-<button class="btn btn-primary" id="btnGet" >Test</button>
-
+<button class="btn btn-primary" id="syncfusion">syncfusion Create Excel Property</button>
+<button class="btn btn-primary" id="EPPlus">EPPlus Create Excel GNU </button>
 
 <form action="/" method="post"></form>
 <form action="/Home/Listele" method="get">

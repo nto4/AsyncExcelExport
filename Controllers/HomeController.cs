@@ -203,7 +203,7 @@ namespace TestNagis.Controllers
             string fileName = guid;
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }
-        public void TestEEP()
+        public void EEPCreateExcel(DateTime? start, DateTime? end)
         {
             /*
               using (var excelFile = new ExcelPackage(targetFile))
@@ -215,16 +215,53 @@ namespace TestNagis.Controllers
              */
             using (ExcelPackage excel = new ExcelPackage())
             {
+                var temp = db.Transections.ToList();
+                DateTime startdate = start ?? new DateTime(2000, 10, 10, 1, 1, 1, 1); ;
+
+                DateTime enddate = end ?? DateTime.Now;
+                DateTime now = DateTime.Now;
+                string date = now.ToShortDateString();
+                string time = now.ToLongTimeString();
+                date = date + "-" + time;
+                //for (int i = 0; i < 10000; i++)
+                //{
+                //    Debug.WriteLine(i);
+                //}
+                foreach (var item in temp.ToList())
+                {
+                    if (item.Date < startdate || item.Date > enddate)
+                    {
+                        temp.Remove(item);
+
+                    }
+                }
+                  int RowRange = temp.Count();
+                string name = "Report_";
+                // string date = now.ToString("F");
+                date = date.Replace(" ", "_");
+                date = date.Replace(",", "_");
+                date = date.Replace(":", "-");
+                date = date.Replace("/", "_");
+                string sonu = ".xls";
+                date += sonu;
+                name += date;
+
+
+                Download m = new Download();
+                m.IsExist = false;
+                m.CreateDate = now;
+                m.EndDate = now;
+                m.StartDate = now;
+                m.GuidName = name;
+                db.Downloads.Add(m);
+                db.SaveChanges();
+
                 excel.Workbook.Worksheets.Add("Worksheet1");
                 //var headerrow = new List<string[]>()
                 //{
                 //  new string[] { "id", "first name", "last name", "dob" }
                 //};
-                var temp = db.Transections.ToList();
-                for (int i = 0; i < temp.Count(); i++)
-                {
-
-                }
+            
                 // determine the header range (e.g. a1:d1)
                 //string headerrange = "a1:" + char.ConvertFromUtf32(headerrow[0].Length + 64) + "1";
 
@@ -242,7 +279,7 @@ namespace TestNagis.Controllers
                 worksheet.Cells["D1"].Value = "Amount";
                 worksheet.Cells["E1"].Value = "Date";
 
-                int RowRange = temp.Count();
+              
                 //set data from list
 
                 for (int i = 2; i < (RowRange + 2); i++)
@@ -259,9 +296,17 @@ namespace TestNagis.Controllers
                 //Make all text fit the cells
                 worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
-                string path = Path.Combine(Server.MapPath("~/"), ("Reports\\" + "a.xlsx"));
+                string path = Path.Combine(Server.MapPath("~/"), ("Reports\\" + name));
                 FileInfo excelFile = new FileInfo(path);//new FileInfo(@"C:\Users\amir\Desktop\test.xlsx");
                 excel.SaveAs(excelFile);
+                var bull = db.Downloads.SingleOrDefault(b => b.GuidName == name);
+
+
+                if (bull != null)
+                {
+                    bull.IsExist = true;
+                    db.SaveChanges();
+                }
             }
         }
         public void CreateDocument(DateTime? start, DateTime? end)
@@ -277,16 +322,10 @@ namespace TestNagis.Controllers
                 string date = now.ToShortDateString();
                 string time = now.ToLongTimeString();
                 date = date + "-" + time;
-
-
-
-
                 //for (int i = 0; i < 10000; i++)
                 //{
                 //    Debug.WriteLine(i);
-
                 //}
- 
                 foreach (var item in temp.ToList())
                 {
                     if (item.Date < startdate || item.Date > enddate)
@@ -549,7 +588,7 @@ namespace TestNagis.Controllers
                 }
             }
 
-            TestEEP();// Buna devam edilecek
+            //EEPCreateExcel();// Buna devam edilecek
             if (submit == "report")
             {
                 ExportToExcel(dates, datee);
